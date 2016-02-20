@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous", "PowerShell.Continuous\PowerShell.Continuous.csproj", "{9454807B-7615-4B86-9639-181C65CB75BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous.Plugin.NuGet", "PowerShell.Continuous.Plugin.NuGet\PowerShell.Continuous.Plugin.NuGet.csproj", "{0BE2E332-B37B-44AC-849E-C54BE37A76D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous.Tasks.Version", "PowerShell.Continuous.Tasks.Version\PowerShell.Continuous.Tasks.Version.csproj", "{F98233E5-B96F-4184-9DE8-0FA9CE8AC5A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous.Tasks.Version.AssemblyInfo", "PowerShell.Continuous.Tasks.Version.AssemblyInfo\PowerShell.Continuous.Tasks.Version.AssemblyInfo.csproj", "{1575CEA2-6D48-4216-A663-F1891CE600A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_Continuous", "_Continous\_Continuous.csproj", "{C20DC829-F754-4398-8FD1-F5DD8A7FF5F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous.Tasks.Version.ModulePsd1", "PowerShell.Continuous.Tasks.Version.ModulePsd1\PowerShell.Continuous.Tasks.Version.ModulePsd1.csproj", "{A7CCE4DF-0D6C-49CA-A786-6B5449E2107B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{563F793B-04F6-48C9-93C9-A0EBC5224DED}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9454807B-7615-4B86-9639-181C65CB75BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9454807B-7615-4B86-9639-181C65CB75BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9454807B-7615-4B86-9639-181C65CB75BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9454807B-7615-4B86-9639-181C65CB75BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE2E332-B37B-44AC-849E-C54BE37A76D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE2E332-B37B-44AC-849E-C54BE37A76D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE2E332-B37B-44AC-849E-C54BE37A76D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE2E332-B37B-44AC-849E-C54BE37A76D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98233E5-B96F-4184-9DE8-0FA9CE8AC5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98233E5-B96F-4184-9DE8-0FA9CE8AC5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98233E5-B96F-4184-9DE8-0FA9CE8AC5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98233E5-B96F-4184-9DE8-0FA9CE8AC5A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1575CEA2-6D48-4216-A663-F1891CE600A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1575CEA2-6D48-4216-A663-F1891CE600A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1575CEA2-6D48-4216-A663-F1891CE600A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1575CEA2-6D48-4216-A663-F1891CE600A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C20DC829-F754-4398-8FD1-F5DD8A7FF5F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C20DC829-F754-4398-8FD1-F5DD8A7FF5F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C20DC829-F754-4398-8FD1-F5DD8A7FF5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C20DC829-F754-4398-8FD1-F5DD8A7FF5F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7CCE4DF-0D6C-49CA-A786-6B5449E2107B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CCE4DF-0D6C-49CA-A786-6B5449E2107B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7CCE4DF-0D6C-49CA-A786-6B5449E2107B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7CCE4DF-0D6C-49CA-A786-6B5449E2107B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
