@@ -94,10 +94,6 @@ PrivateData = @{
 		}
 	)
 
-	Command = @{
-		Path = ''
-	}
-
 	Packages = @{
 		Path = 'nuget-packages:\'
 	}

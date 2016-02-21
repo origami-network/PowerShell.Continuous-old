@@ -102,9 +102,26 @@ PrivateData = @{
 			Create = $true
 		}
 	)
+
+	Bootstrap = @(
+		@{
+			Name = 'Invoke-Build'
+			Version = '2.14.0'
+			Source = @(
+				@{
+					Path = $(Join-Path (Join-Path $env:APPDATA (Join-Path 'NuGet' 'packages')) '{name}.{version}')
+					Url = 'https://www.nuget.org/api/v2/package/{name}/{version}'
+					SubPath = "tools"
+					Type = 'zip'
+				}
+			)
+		}
+	)
+
 	Modules = @{
-		Path = @("workspace:\")
+		Path = @('workspace:\')
 	}
+
 	Workspace = @{
 		Path = 'workspace:\'
 	}

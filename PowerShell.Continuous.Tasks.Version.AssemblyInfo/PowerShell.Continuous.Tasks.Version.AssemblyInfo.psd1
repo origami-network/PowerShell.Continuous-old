@@ -84,24 +84,7 @@ AliasesToExport = ''
 # FileList = @()
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess
-PrivateData = @{
-	Drives = @(
-		@{
-			Name = 'nuget-packages'
-			Path = @(
-				'workspace:\packages'
-			)
-		}
-	)
-
-	Command = @{
-		Path = ''
-	}
-
-	Packages = @{
-		Path = 'nuget-packages:\'
-	}
-}
+# PrivateData = @{}
 
 # HelpInfo URI of this module
 # HelpInfoURI = ''
