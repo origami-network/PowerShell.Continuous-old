@@ -47,6 +47,7 @@
       <Link>Invoke-Continuous.ps1</Link>
     </Content>
     <None Include="Integration.action.ps1" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

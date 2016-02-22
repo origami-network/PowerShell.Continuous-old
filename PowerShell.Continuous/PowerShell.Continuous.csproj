@@ -60,6 +60,9 @@
       <Link>Invoke-Continuous.ps1</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Invoke-Continuous.Tests.ps1" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

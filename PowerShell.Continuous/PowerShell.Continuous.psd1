@@ -69,7 +69,7 @@ NestedModules = @(
 )
 
 # Functions to export from this module
-FunctionsToExport = ''
+FunctionsToExport = 'Invoke-Continuous'
 
 # Cmdlets to export from this module
 CmdletsToExport = ''
