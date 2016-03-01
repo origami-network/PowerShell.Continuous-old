@@ -8,6 +8,8 @@ param (
 
 	[string] $ToolsBasePath = $env:APPDATA,
 
+	[string] $NuGetVersion = '2.8.6',
+
 	[string] $WorkspacePath = (Resolve-Path '.').Path,
 	[string] $ProjectPath = (Join-Path $WorkspacePath '_Continuous' -Resolve),
 	[string] $ArtifactsPath = (Join-Path $WorkspacePath '.Artifacts'),
@@ -16,12 +18,36 @@ param (
 )
 
 $_ErrorActionPreference = $ErrorActionPreference
-
+Push-Location
 try {
-	$ErrorActionPreference = 'Stop'
 	Write-Verbose "Set default error action to '$($ErrorActionPreference)'."
+	$ErrorActionPreference = 'Stop'
 	
-	# 'TODO: search nuget in workspace or bootstrap it'
+	Write-Verbose "Set location to '$($WorkspacePath)'."
+	Set-Location $WorkspacePath
+	
+	$nugetFileName = 'NuGet.exe'
+	$nuGetPath = Join-Path $WorkspacePath '.nuget'
+	$nuGetFile = Join-Path $nuGetPath $nugetFileName -Resolve -ErrorAction Ignore 
+	if (-not $nuGetFile) {
+		$nuGetPath = Join-Path $ToolsBasePath (Join-Path 'NuGet' $NuGetVersion)
+		$nuGetFile = Join-Path $nuGetPath $nugetFileName
+		if (-not (Test-Path $nuGetFile)) {
+			New-Item $nuGetPath -ItemType Directory -Force | Out-Null
+
+			$nuGetFileUrl = "https://dist.nuget.org/win-x86-commandline/v$($NuGetVersion)/nuget.exe"
+
+			Write-Verbose "Download '$($nugetFileName)' ($($NuGetVersion)) in '$($nuGetPath)' from '$($nuGetFileUrl)'."
+			(New-Object system.net.WebClient).DownloadFile($nuGetFileUrl, $nuGetFile)
+		}
+	}
+
+	$nuGetCommand = $nuGetFile
+	if (-not $nuGetCommand) {
+		Write-Error "Command '$($nugetFileName)' can't be found in '$($nuGetPath)' path."
+	}
+	Write-Verbose "Restoring NuGet packages."
+	& $nuGetCommand restore -Verbosity detailed -NonInteractive 
 
 	$continuousModuleName = 'PowerShell.Continuous'
 	$continuousModulePath = Join-Path $WorkspacePath $continuousModuleName -Resolve -ErrorAction Ignore
@@ -33,14 +59,14 @@ try {
 			$packagesFile = Join-Path $continuousModulePath 'packages.config' -Resolve -ErrorAction Ignore
 			if ($packagesPath -and $packagesFile) {
 				$packageName = $continuousModuleName
-				$packageVersion = Select-Xml "//package[@id='Invoke-Builda']/@version" $packagesFile | 
+				$packageVersion = Select-Xml "//package[@id='$($packageName)']/@version" $packagesFile | 
 					% { $_.Node.Value }
 				
 				$continuousModulePath = Join-Path $packagesPath (Join-Path "$($packageName).$($packageVersion)" $continuousModuleName) -Resolve -ErrorAction Ignore
 			}
 		}
 
-		# TBD: It is good idea to bootsrap module by downloading it?
+		# TBD: It is good idea to bootstrap module by downloading it?
 
 		if (-not $continuousModulePath) {
 			Write-Error "Module '$($continuousModuleName)' can't be found."
@@ -50,10 +76,9 @@ try {
 	Import-Module $continuousModulePath -Force
 	
 	Write-Verbose "Invoke Continuous $($Action) with tasks $(($Tasks | % { ""'$_'"" } ) -join ', ')."
-	Invoke-Continuous $Action $Tasks
+	Invoke-Continuous $Action $Tasks -Verbose
 
 	Write-Verbose "Continuous $($Action) finished succesfully."
-
 } catch {
 	Write-Verbose "Continuous $($Action) failed."
 	Write-Error "'$($Action) failed: $($_.Exception)"
@@ -62,8 +87,12 @@ try {
 		exit 1
 	}
 } finally {
+	if ((Get-Location).Path -ne (Pop-Location -PassThru).Path) {
+		Write-Verbose "Restored location to '$(Get-Location)'."
+	}
+
 	if ($ErrorActionPreference -ne $_ErrorActionPreference) {
-		Write-Verbose "Restore error action to '$($_ErrorActionPreference)'."
 		$ErrorActionPreference = $_ErrorActionPreference
+		Write-Verbose "Restored error action to '$($_ErrorActionPreference)'."
 	}
 }
