@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AD44B8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Continuous.Plugin.TeamCity", "PowerShell.Continuous.Plugin.TeamCity\PowerShell.Continuous.Plugin.TeamCity.csproj", "{11CF2E02-16C1-463C-AD26-82DC52D45424}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Continuous.Integration", "Continuous.Integration\Continuous.Integration.csproj", "{934FFC77-4B85-41DA-9DD2-89B1DBB5D796}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{11CF2E02-16C1-463C-AD26-82DC52D45424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11CF2E02-16C1-463C-AD26-82DC52D45424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11CF2E02-16C1-463C-AD26-82DC52D45424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{934FFC77-4B85-41DA-9DD2-89B1DBB5D796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934FFC77-4B85-41DA-9DD2-89B1DBB5D796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934FFC77-4B85-41DA-9DD2-89B1DBB5D796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934FFC77-4B85-41DA-9DD2-89B1DBB5D796}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
