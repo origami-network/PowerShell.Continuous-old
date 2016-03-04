@@ -45,8 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Module.ModulePath.psm1" />
-    <Content Include="Module.Drives.psm1" />
     <Content Include="Module.psm1" />
     <Content Include="PowerShell.Continuous.psd1" />
   </ItemGroup>
@@ -61,8 +59,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Invoke-Continuous.Tests.ps1" />
+    <None Include="Private\Join-PsModulePath.ps1" />
+    <None Include="Private\New-ContinuousDrives.Tests.ps1" />
+    <None Include="Private\Join-PsModulePath.Tests.ps1" />
+    <None Include="Private\New-ContinuousDrives.ps1" />
+    <None Include="Tests\Invoke-Continuous.Tests.ps1" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

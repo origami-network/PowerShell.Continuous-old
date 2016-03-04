@@ -63,10 +63,8 @@ Copyright = '(c) 2016 Bartlomiej Dubas. All rights reserved.'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @(
-	'Module.Drives.psm1'
-	'Module.ModulePath.psm1'
-)
+# NestedModules = @()
+
 
 # Functions to export from this module
 FunctionsToExport = 'Invoke-Continuous'
@@ -87,51 +85,7 @@ AliasesToExport = ''
 # FileList = @()
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess
-PrivateData = @{
-	Drives = @(
-		@{
-			Name = 'workspace'
-		}
-		@{
-			Name = 'project'
-			Root = 'workspace:\_Continuous'
-		}
-		@{
-			Name = 'artifacts'
-			Root = 'workspace:\.Artifacts'
-			Create = $true
-		}
-	)
-
-	Bootstrap = @(
-		@{
-			Name = 'Invoke-Build'
-			Version = '2.14.0'
-			Source = @(
-				@{
-					Path = $(Join-Path (Join-Path $env:APPDATA (Join-Path 'NuGet' 'packages')) '{name}.{version}')
-					Url = 'https://www.nuget.org/api/v2/package/{name}/{version}'
-					SubPath = "tools"
-					Type = 'zip'
-				}
-			)
-		}
-	)
-
-	Modules = @{
-		Path = @('workspace:\')
-	}
-
-	Workspace = @{
-		Path = 'workspace:\'
-	}
-	Project = @{
-		Path = 'project:\'
-	}
-	Artifacts = @{
-		Path = 'artifacts:\'
-	}
-}
+PrivateData = @{}
 
 # HelpInfo URI of this module
 # HelpInfoURI = ''

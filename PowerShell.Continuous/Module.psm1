@@ -1,45 +1,62 @@
-﻿[CmdletBinding()]
-param (
-	[string] $WorkspaceDriveRoot = (Get-Location).Path,
-	[string] $ProjectDriveRoot,
-	[string] $ArtifactsDriveRoot
-)
-
-$module = $ExecutionContext.SessionState.Module
-$data = $module.PrivateData
-
-Set-Drives $WorkspaceDriveRoot $ProjectDriveRoot $ArtifactsDriveRoot -Scope 2
-Add-ModulesPath $data.Modules.Path
+﻿$moduleRootPath = Split-Path -Path $MyInvocation.MyCommand.Path
+Resolve-Path "$moduleRootPath\Private\*.ps1" |
+	? { -not ($_.ProviderPath.ToLower().Contains(".tests.")) } |
+	% { . $_.ProviderPath }
 
 function Invoke-Continuous {
 	[CmdletBinding()]
 	param (
-		[Parameter()]
-		[string] $Action,
+		[Parameter(
+			Mandatory = $true,
+			Position = 0
+		)]
+		[scriptblock] $Action,
 
-		[Parameter()]
-		[string[]] $Task = '.',
-
-		[string] $InvokeBuildFile
+		[string] $WorkspaceDriveRoot = (Get-Location).Path,
+		[string] $ActionDriveRoot = "workspace:\Action",
+		[string] $ArtifactsDriveRoot = "workspace:\.Artifacts",
+		[string[]] $ModulesPaths = @(),
+		[string[]] $Modules = @() 
 	)
 
-	$actionFile = Join-Path $data.Project.Path "$($Action).action.ps1" -Resolve
-	Write-Verbose "Using action file '$($actionFile)'."
+	begin {
+		$ErrorActionPreference = Stop
 
-	$packagesPath = Join-Path 'workspace:' 'packages' -Resolve -ErrorAction Ignore
-	$packagesFile = Join-Path 'project:' 'packages.config' -Resolve -ErrorAction Ignore
-	if ($packagesPath -and $packagesFile) {
-		$packageName = 'Invoke-Build'
-		$packageVersion = Select-Xml "//package[@id='$($packageName)']/@version" $packagesFile | 
-			% { $_.Node.Value }
-
-		Write-Verbose "Using package '$($packageName)' ($($packageVersion))."
-		$invokeBuildCommand = Join-Path $packagesPath (Join-Path "$($packageName).$($packageVersion)" (Join-Path 'tools' 'Invoke-Build.ps1')) -Resolve -ErrorAction Ignore
+		New-ContinuousDrives $WorkspaceDriveRoot $ActionDriveRoot $ArtifactsDriveRoot
+		$env:PSModulePath = Join-PsModulePath $ModulesPaths
 	}
 
-	if (-not $invokeBuildCommand) {
-		throw 'TODO: bootstrap Invoke-Build'
+	process {
+		Invoke-Command $Action -NoNewScope
 	}
-	Write-Verbose "Invoke tasks $(($Task | % {'''' + $_ + ''''}) -join ', ') using command '$($invokeBuildCommand)'."
-	& $invokeBuildCommand $Task $actionFile 
+}
+
+function New-ContinuousDrives {
+	[CmdletBinding()]
+	param (
+		[Parameter(
+			Mandatory = $true,
+			Position = 0
+		)]
+		[string] $WorkspaceDriveRoot,
+		[Parameter(
+			Mandatory = $true,
+			Position = 0
+		)]
+		[string] $ActionDriveRoot,
+		[Parameter(
+			Mandatory = $true,
+			Position = 0
+		)]
+		[string] $ArtifactsDriveRoot
+	)
+
+	process {
+		New-PSDrive Workspace -Root $WorkspaceDriveRoot -PSProvider FileSystem | Out-Null
+		New-PSDrive Action -Root $WorkspaceDriveRoot -PSProvider FileSystem | Out-Null
+		if (-not (Test-Path $ArtifactsDriveRoot)) {
+			New-Item $ArtifactsDriveRoot -ItemType Directory | Out-Null
+		}
+		New-PSDrive Artifacts -Root $ArtifactsDriveRoot -PSProvider FileSystem | Out-Null
+	}
 }
