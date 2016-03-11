@@ -14,7 +14,7 @@ Describe 'Join-PsModulePath' -Tags "Scope-White" {
 	}
 
 	It 'Expands path for PSDrive' {
-		$result = Join-PsModulePath 'TestDrive:'
+		$result = Join-PsModulePath 'TestDrive:\'
 
 		$result | should match ([regex]::Escape((Get-PSDrive TestDrive).Root))
 		$result | should not match 'TestDrive'
@@ -23,7 +23,7 @@ Describe 'Join-PsModulePath' -Tags "Scope-White" {
 	It 'Uses '';'' character as seperator' {
 		$orginal = $env:PSModulePath
 
-		$result = & $sut 'TestDrive:'
+		$result = & $sut 'TestDrive:\'
 
 		($result -split ';').Count | should be (($orginal -split ';').Count + 1)
 	}

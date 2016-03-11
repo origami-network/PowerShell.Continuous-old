@@ -10,53 +10,30 @@ function Invoke-Continuous {
 			Mandatory = $true,
 			Position = 0
 		)]
-		[scriptblock] $Action,
-
-		[string] $WorkspaceDriveRoot = (Get-Location).Path,
-		[string] $ActionDriveRoot = "workspace:\Action",
-		[string] $ArtifactsDriveRoot = "workspace:\.Artifacts",
-		[string[]] $ModulesPaths = @(),
-		[string[]] $Modules = @() 
-	)
-
-	begin {
-		$ErrorActionPreference = Stop
-
-		New-ContinuousDrives $WorkspaceDriveRoot $ActionDriveRoot $ArtifactsDriveRoot
-		$env:PSModulePath = Join-PsModulePath $ModulesPaths
-	}
-
-	process {
-		Invoke-Command $Action -NoNewScope
-	}
-}
-
-function New-ContinuousDrives {
-	[CmdletBinding()]
-	param (
-		[Parameter(
-			Mandatory = $true,
-			Position = 0
-		)]
-		[string] $WorkspaceDriveRoot,
-		[Parameter(
-			Mandatory = $true,
-			Position = 0
-		)]
 		[string] $ActionDriveRoot,
 		[Parameter(
 			Mandatory = $true,
-			Position = 0
+			Position = 1
 		)]
-		[string] $ArtifactsDriveRoot
+		[scriptblock] $ActionScript,
+
+		[string] $WorkspaceDriveRoot = (Get-Location).Path,		
+		[string] $ArtifactsDriveRoot = "workspace:\.Artifacts",
+
+		[string[]] $ModulesPaths = @('workspace:\')
 	)
 
-	process {
-		New-PSDrive Workspace -Root $WorkspaceDriveRoot -PSProvider FileSystem | Out-Null
-		New-PSDrive Action -Root $WorkspaceDriveRoot -PSProvider FileSystem | Out-Null
-		if (-not (Test-Path $ArtifactsDriveRoot)) {
-			New-Item $ArtifactsDriveRoot -ItemType Directory | Out-Null
-		}
-		New-PSDrive Artifacts -Root $ArtifactsDriveRoot -PSProvider FileSystem | Out-Null
-	}
+	$private:PSModulePath = $env:PSModulePath
+	try {
+		$ErrorActionPreference = 'Stop'
+
+		New-ContinuousDrives $WorkspaceDriveRoot $ActionDriveRoot $ArtifactsDriveRoot
+		$env:PSModulePath = Join-PsModulePath $ModulesPaths
+
+		& ([scriptblock]::Create($ActionScript.ToString()))
+	} catch {
+		throw 
+	} finally {
+		$env:PSModulePath = $private:PSModulePath
+	} 
 }

@@ -43,4 +43,4 @@ The action is invoked and the Version task is Performed:
 
 ## License
 
-PowerShell.Continuous is released under the [MIT license](http://www.opensource.org/licenses/MIT).
+PowerShell.Continuous set of modules is released under the [MIT license](http://www.opensource.org/licenses/MIT).

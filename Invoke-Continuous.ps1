@@ -11,13 +11,12 @@ param (
 	[string] $NuGetVersion = '2.8.6',
 
 	[string] $WorkspacePath = (Resolve-Path '.').Path,
-	[string] $ProjectPath = (Join-Path $WorkspacePath '_Continuous' -Resolve),
+	[string] $ActionPath = (Join-Path $WorkspacePath "Continuous.$($Action)" -Resolve),
 	[string] $ArtifactsPath = (Join-Path $WorkspacePath '.Artifacts'),
 
 	[switch] $SkipExitOnError
 )
 
-$_ErrorActionPreference = $ErrorActionPreference
 Push-Location
 try {
 	Write-Verbose "Set default error action to '$($ErrorActionPreference)'."
@@ -52,7 +51,7 @@ try {
 	$continuousModuleName = 'PowerShell.Continuous'
 	$continuousModulePath = Join-Path $WorkspacePath $continuousModuleName -Resolve -ErrorAction Ignore
 	if (-not $continuousModulePath) {
-		if (Test-Path $ProjectPath) {
+		if (Test-Path $ActionPath) {
 			Write-Verbose "Search '$($continuousModuleName)' module in '$(ProjectPath)' NuGet packages references."
 
 			$packagesPath = Join-Path $WorkspacePath 'packages' -Resolve -ErrorAction Ignore
@@ -66,8 +65,6 @@ try {
 			}
 		}
 
-		# TBD: It is good idea to bootstrap module by downloading it?
-
 		if (-not $continuousModulePath) {
 			Write-Error "Module '$($continuousModuleName)' can't be found."
 		}
@@ -76,23 +73,18 @@ try {
 	Import-Module $continuousModulePath -Force
 	
 	Write-Verbose "Invoke Continuous $($Action) with tasks $(($Tasks | % { ""'$_'"" } ) -join ', ')."
-	Invoke-Continuous $Action $Tasks -Verbose
+	# FIXME: Invoke-Continuous $Action $Tasks -Verbose
 
 	Write-Verbose "Continuous $($Action) finished succesfully."
 } catch {
 	Write-Verbose "Continuous $($Action) failed."
 	Write-Error "'$($Action) failed: $($_.Exception)"
 	
-	if ($SkipExitOnError) {
+	if (-not $SkipExitOnError) {
 		exit 1
 	}
 } finally {
 	if ((Get-Location).Path -ne (Pop-Location -PassThru).Path) {
 		Write-Verbose "Restored location to '$(Get-Location)'."
-	}
-
-	if ($ErrorActionPreference -ne $_ErrorActionPreference) {
-		$ErrorActionPreference = $_ErrorActionPreference
-		Write-Verbose "Restored error action to '$($_ErrorActionPreference)'."
 	}
 }
