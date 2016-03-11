@@ -1,43 +1,47 @@
 ﻿$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = 'PowerShell.Continuous'
 
-Describe 'PowerShell.Continuous Module' -Tags "Scope-White" {
+Describe 'PowerShell.Continuous Module' -Tags "Scope-Black" {
 	Import-Module "$here\$sut.psd1"
+
+	It "exports Invoke-Continuous command" {
+		Get-Command -Module $sut | ? { $_.Name -eq 'Invoke-Continuous' } | should not beNullOrEmpty
+	}
 
 	Context "Invoke-Continuous" {
 		New-Item 'TestDrive:\Workspace' -ItemType directory
 		New-Item 'TestDrive:\Workspace\Continuous.Integration' -ItemType directory
 
-		It 'Should invoke action script with proper environmnet' {
+		It 'invokes action script with proper environmnet' {
 			In 'TestDrive:\Workspace' {
 				Invoke-Continuous Workspace:\Continuous.Integration {
-					Get-PSDrive Workspace | % { $_.Root } | Should Be (Get-Item 'TestDrive:\Workspace').FullName
-					Get-PSDrive Action | % { $_.Root } | Should Be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
-					Get-PSDrive Artifacts | % { $_.Root } | Should Be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
+					Get-PSDrive Workspace | % { $_.Root } | should be (Get-Item 'TestDrive:\Workspace').FullName
+					Get-PSDrive Action | % { $_.Root } | should be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
+					Get-PSDrive Artifacts | % { $_.Root } | should be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
 
-					($env:PSModulePath -split ';') | Select-Object -First 1 | Should Be (Get-Item 'TestDrive:\Workspace\').FullName
+					($env:PSModulePath -split ';') | Select-Object -First 1 | should be (Get-Item 'TestDrive:\Workspace\').FullName
 
 					'Executed' | Add-Content 'Artifacts:\Result.txt'
 				}
 			}
 
-			'TestDrive:\Workspace\.Artifacts\Result.txt' | Should Contain 'Executed'
+			'TestDrive:\Workspace\.Artifacts\Result.txt' | should Contain 'Executed'
 		}
 
-		It 'Should clean up environmnet after action script was invoked' {
+		It 'cleans up environmnet after action script was invoked' {
 			$orginal = $env:PSModulePath
 
 			In 'TestDrive:\Workspace' {
 				Invoke-Continuous Workspace:\Continuous.Integration {}
 			}
 
-			$env:PSModulePath | Should Be $orginal
-			Get-PSDrive Workspace | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace').FullName
-			Get-PSDrive Action | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
-			Get-PSDrive Artifacts | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
+			$env:PSModulePath | should be $orginal
+			Get-PSDrive Workspace | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace').FullName
+			Get-PSDrive Action | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
+			Get-PSDrive Artifacts | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
 		}
 
-		It 'Should propagate error from action script' {
+		It 'propagates error from action script' {
 			$orginal = $env:PSModulePath
 
 			$invoke = {
@@ -49,10 +53,10 @@ Describe 'PowerShell.Continuous Module' -Tags "Scope-White" {
 			In 'TestDrive:\Workspace' {
 				$invoke | Should Throw 'error from action script'
 			}
-			$env:PSModulePath | Should Be $orginal
-			Get-PSDrive Workspace | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace').FullName
-			Get-PSDrive Action | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
-			Get-PSDrive Artifacts | % { $_.Root } | Should Not Be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
+			$env:PSModulePath | Should be $orginal
+			Get-PSDrive Workspace | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace').FullName
+			Get-PSDrive Action | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace\Continuous.Integration').FullName
+			Get-PSDrive Artifacts | % { $_.Root } | should not be (Get-Item 'TestDrive:\Workspace\.Artifacts').FullName
 		}
 	}
 }

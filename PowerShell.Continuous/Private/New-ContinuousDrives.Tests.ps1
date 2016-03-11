@@ -11,34 +11,34 @@ Describe 'New-ContinuousDrives' -Tags "Scope-White" {
 
 		& $sut 'TestDrive:\Workspace' 'Workspace:\Action' 'Workspace:\.Artifacts'
 		
-		It 'Creates new PSDrive for Worspace' {
-			Get-PSDrive Workspace | Should Not BeNullOrEmpty
+		It 'creates new PSDrive for Worspace' {
+			Get-PSDrive Workspace | should Not beNullOrEmpty
 		}
-		It 'Creates new PSDrive for Action' {
-			Get-PSDrive Action | Should Not BeNullOrEmpty
+		It 'creates new PSDrive for Action' {
+			Get-PSDrive Action | should Not beNullOrEmpty
 		}
-		It 'Creates new PSDrive for Artifacts' {
-			Get-PSDrive Artifacts | Should Not BeNullOrEmpty
+		It 'creates new PSDrive for Artifacts' {
+			Get-PSDrive Artifacts | should Not beNullOrEmpty
 		}
 	}
 
 	Context "No Workspace directory" {
-		It 'Reports error if Workspace directory is not found' {
+		It 'reports error if Workspace directory is not found' {
 			$invoke = { & $sut 'TestDrive:\Workspace' 'Workspace:\Action' 'Workspace:\.Artifacts' -ErrorAction Stop }
 
-			$invoke | Should Throw 'Workspace'
-			Get-PSDrive Workspace | Should BeNullOrEmpty
+			$invoke | should throw 'Workspace'
+			Get-PSDrive Workspace | should beNullOrEmpty
 		}
 	}
 
 	Context "No Action directory" {
-		It 'Reports error if Action directory is not found' {
+		It 'reports error if Action directory is not found' {
 			New-Item 'TestDrive:\Workspace' -ItemType directory
 
 			$invoke = { & $sut 'TestDrive:\Workspace' 'Workspace:\Action' 'Workspace:\.Artifacts' -ErrorAction Stop }
 
-			$invoke | Should Throw 'Action'
-			Get-PSDrive Action | Should BeNullOrEmpty
+			$invoke | should throw 'Action'
+			Get-PSDrive Action | should beNullOrEmpty
 		}
 	}
 
@@ -49,8 +49,8 @@ Describe 'New-ContinuousDrives' -Tags "Scope-White" {
 		It 'Creates Artifacts directory if does not exists' {
 			& $sut 'TestDrive:\Workspace' 'Workspace:\Action' 'Workspace:\.Artifacts'
 
-			Get-Item 'Workspace:\.Artifacts' | Should Not BeNullOrEmpty
-			Get-PSDrive Artifacts | Should Not BeNullOrEmpty
+			Get-Item 'Workspace:\.Artifacts' | should Not beNullOrEmpty
+			Get-PSDrive Artifacts | should Not beNullOrEmpty
 		}
 	}
 }
