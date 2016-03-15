@@ -54,7 +54,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Private\Edit-AssemblyVersion.ps1" />
+    <None Include="Private\Get-AssemblyVersion.ps1" />
     <None Include="Private\Get-AssemblyInfoFiles.ps1" />
+    <Content Include="README.md" />
+    <Content Include="Private\Get-AssemblyVersion.Tests.ps1" />
+    <Content Include="Private\Edit-AssemblyVersion.Tests.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Private\Get-AssemblyInfoFiles.Tests.ps1" />

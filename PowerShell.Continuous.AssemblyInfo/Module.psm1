@@ -13,7 +13,11 @@ function Get-AssemblyInfoVersion {
 	)
 
 	Get-AssemblyInfoFiles $FilePath |
-		% { @(Get-AssemblyVersion $_ -Kind Informational, Get-Version $_ -Kind File, Get-Version $_) } |
+		% { @(
+			Get-AssemblyVersion $_ -Kind Informational
+			Get-AssemblyVersion $_ -Kind File
+			Get-AssemblyVersion $_
+		) } |
 		Select-Object -First 1
 }
 
