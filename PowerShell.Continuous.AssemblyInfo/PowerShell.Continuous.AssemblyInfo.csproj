@@ -54,6 +54,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PowerShell.Continuous.AssemblyInfo.Tests.ps1" />
     <None Include="Private\Edit-AssemblyVersion.ps1" />
     <None Include="Private\Get-AssemblyVersion.ps1" />
     <None Include="Private\Get-AssemblyInfoFiles.ps1" />
