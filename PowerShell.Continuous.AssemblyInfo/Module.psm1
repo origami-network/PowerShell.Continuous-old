@@ -46,7 +46,7 @@ function Edit-AssemblyInfoVersion {
 
 	Get-AssemblyInfoFiles $FilePath | % {
 		Edit-AssemblyVersion $_ $Version
-		Edit-AssemblyVersion $_ $Version -Kind File
-		Edit-AssemblyVersion $_ $Version -Kind Informational
+		Edit-AssemblyVersion $_ $FileVersion -Kind File
+		Edit-AssemblyVersion $_ $InformationalVersion -Kind Informational
 	}
 }
