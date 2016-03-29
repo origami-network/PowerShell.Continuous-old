@@ -18,6 +18,7 @@
 		[string] $ArtifactsDriveRoot
 	)
 
+    # TODO: Make it in global scope
 	New-PSDrive Workspace -Root $WorkspaceDriveRoot -PSProvider FileSystem -Scope 1 -ErrorAction $ErrorActionPreference | Out-Null
 	New-PSDrive Action -Root $ActionDriveRoot -PSProvider FileSystem -Scope 1 -ErrorAction $ErrorActionPreference | Out-Null
 	if (-not (Test-Path $ArtifactsDriveRoot)) {
