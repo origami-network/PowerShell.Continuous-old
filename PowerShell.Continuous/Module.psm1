@@ -34,6 +34,8 @@ function Invoke-Continuous {
 	} catch {
 		throw 
 	} finally {
+		Remove-ContinuousDrives
+
 		$env:PSModulePath = $private:PSModulePath
 	} 
 }
