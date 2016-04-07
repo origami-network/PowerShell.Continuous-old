@@ -46,6 +46,8 @@
     <Content Include="..\Invoke-Continuous.ps1">
       <Link>Invoke-Continuous.ps1</Link>
     </Content>
+    <None Include="Invoke-Action.ps1" />
+    <None Include="packages.config" />
     <None Include="Tasks.Version.ps1" />
     <None Include="Tasks.ps1" />
   </ItemGroup>

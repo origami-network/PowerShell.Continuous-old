@@ -41,6 +41,17 @@ The action is invoked and the Version task is Performed:
 * `Output:\` - is set to `Action:\` 
 
 
+## Contribute
+
+
+### Integration
+
+From the solution folder execute PowerShell command:
+
+``` powershell
+.\Invoke-Contionous Integration
+```
+
 ## License
 
 PowerShell.Continuous set of modules is released under the [MIT license](http://www.opensource.org/licenses/MIT).
